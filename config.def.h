@@ -5,8 +5,8 @@ static const unsigned int borderpx  = 1;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]          = { "monospace:size=10" };
-static const char dmenufont[]       = "monospace:size=10";
+static const char *fonts[]          = { "Source Code Pro:pixelsize=16:antialias=true:autohint=true" };
+static const char dmenufont[]       = "Source Code Pro:pixelsize=15:antialias=true:autohint=true";
 static const char col_gray1[]       = "#222222";
 static const char col_gray2[]       = "#444444";
 static const char col_gray3[]       = "#bbbbbb";
@@ -19,7 +19,8 @@ static const char *colors[][3]      = {
 };
 
 /* tagging */
-static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+static const char *tags[] = { "", "", "", "", "", "", "", "", "" };
+static const char *tagsalt[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 
 static const Rule rules[] = {
 	/* xprop(1):
@@ -27,8 +28,26 @@ static const Rule rules[] = {
 	 *	WM_NAME(STRING) = title
 	 */
 	/* class      instance    title       tags mask     isfloating   monitor */
-	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
-	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
+	// main browser is on workspace 1
+	{ "chromium",  NULL,       NULL,       1 << 0,       0,           -1 },
+	{ "brave-browser", NULL,	NULL,	1 << 0, 0, -1 },
+	// ide/programming related apps go to workspace 2
+	{ "code-oss",  NULL,       NULL,       1 << 1,       0,           -1 },
+	// terminals goes to workspace 3
+	{ "St",  NULL,       NULL,       1 << 2,       0,           -1 },
+	{ "XTerm",  NULL,       NULL,       1 << 2,       0,           -1 },
+	// gui file manager goes to workspace 4
+	{ "thunar",  NULL,       NULL,       1 << 3,       0,           -1 },
+	// virtual machine tools go to workspace 5
+	{ "virt-manager",  NULL,       NULL,       1 << 4,       0,           -1 },
+	// conference call apps goes to workpace 6
+	{ "zoom",     NULL,       NULL,       1 << 5,            0,           -1 },
+	// image/video related apps go to workspace 7
+	{ "Gimp",     NULL,       NULL,       1 << 6,            0,           -1 },
+	// slack is a chat app, goes in workspace 8
+	{ "slack",    NULL,       NULL,       1 << 7,            0,           -1 },
+	// spotify is a media app, goes in workspace 9
+	{ "spotify",    NULL,       NULL,       1 << 8,            0,           -1 },
 };
 
 /* layout(s) */
@@ -44,7 +63,7 @@ static const Layout layouts[] = {
 };
 
 /* key definitions */
-#define MODKEY Mod1Mask
+#define MODKEY Mod4Mask
 #define TAGKEYS(KEY,TAG) \
 	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
@@ -58,6 +77,8 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { "st", NULL };
+static const char *scrotcmd[]  = { "scrot", "~/Pictures/screenshot.jpg" };
+static const char *scrotselectcmd[]  = { "scrot",  "-s",  "~/Pictures/screenshot.jpg" };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -84,6 +105,7 @@ static Key keys[] = {
 	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
+	{ MODKEY,                       XK_n,      togglealttag,   {0} },
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
@@ -94,6 +116,8 @@ static Key keys[] = {
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
+	{ MODKEY,	                XK_Print,  spawn,          {.v = scrotcmd } }, 
+	{ MODKEY|ShiftMask,             XK_Print,  spawn,          {.v = scrotselectcmd } }, 
 };
 
 /* button definitions */
