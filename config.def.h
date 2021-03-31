@@ -77,8 +77,8 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { "st", NULL };
-static const char *scrotcmd[]  = { "scrot", "~/Pictures/screenshot.jpg" };
-static const char *scrotselectcmd[]  = { "scrot",  "-s",  "~/Pictures/screenshot.jpg" };
+static const char *scrotcmd[]  = { "scrot", "/home/javier/Pictures/screenshot.jpg" };
+static const char *scrotselectcmd[]  = { "scrot",  "-s",  "/home/javier/Pictures/screenshot.jpg" };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
